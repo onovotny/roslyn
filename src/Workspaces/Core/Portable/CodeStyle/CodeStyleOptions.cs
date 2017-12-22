@@ -184,6 +184,13 @@ namespace Microsoft.CodeAnalysis.CodeStyle
                     new EditorConfigStorageLocation<CodeStyleOption<AccessibilityModifiersRequired>>("dotnet_style_require_accessibility_modifiers", s => ParseAccessibilityModifiersRequired(s)),
                     new RoamingProfileStorageLocation("TextEditor.%LANGUAGE%.Specific.RequireAccessibilityModifiers")});
 
+        internal static readonly PerLanguageOption<CodeStyleOption<bool>> OmitDefaultAccessibilityModifiers =
+            new PerLanguageOption<CodeStyleOption<bool>>(
+                nameof(CodeStyleOptions), nameof(RequireAccessibilityModifiers), defaultValue: FalseWithNoneEnforcement,
+                storageLocations: new OptionStorageLocation[]{
+                    EditorConfigStorageLocation.ForBoolCodeStyleOption("dotnet_style_omit_default_accessibility_modifiers"),
+                    new RoamingProfileStorageLocation("TextEditor.%LANGUAGE%.Specific.OmitDefaultAccessibilityModifiers")});
+
         private static CodeStyleOption<AccessibilityModifiersRequired> ParseAccessibilityModifiersRequired(string optionString)
         {
             if (TryGetCodeStyleValueAndOptionalNotification(optionString,
