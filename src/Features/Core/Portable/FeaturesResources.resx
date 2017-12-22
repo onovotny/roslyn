@@ -1334,4 +1334,10 @@ This version used in: {2}</value>
   <data name="indexer_" xml:space="preserve">
     <value>indexer</value>
   </data>
+  <data name="Omit_default_accessibility_modifiers" xml:space="preserve">
+    <value>Omit default accessibility modifiers</value>
+  </data>
+  <data name="Remove_default_accessibility_modifier" xml:space="preserve">
+    <value>Remove default accessibility modifier</value>
+  </data>
 </root>

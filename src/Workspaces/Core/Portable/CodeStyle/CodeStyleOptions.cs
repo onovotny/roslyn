@@ -186,7 +186,7 @@ namespace Microsoft.CodeAnalysis.CodeStyle
 
         internal static readonly PerLanguageOption<CodeStyleOption<bool>> OmitDefaultAccessibilityModifiers =
             new PerLanguageOption<CodeStyleOption<bool>>(
-                nameof(CodeStyleOptions), nameof(RequireAccessibilityModifiers), defaultValue: FalseWithNoneEnforcement,
+                nameof(CodeStyleOptions), nameof(OmitDefaultAccessibilityModifiers), defaultValue: FalseWithNoneEnforcement,
                 storageLocations: new OptionStorageLocation[]{
                     EditorConfigStorageLocation.ForBoolCodeStyleOption("dotnet_style_omit_default_accessibility_modifiers"),
                     new RoamingProfileStorageLocation("TextEditor.%LANGUAGE%.Specific.OmitDefaultAccessibilityModifiers")});
