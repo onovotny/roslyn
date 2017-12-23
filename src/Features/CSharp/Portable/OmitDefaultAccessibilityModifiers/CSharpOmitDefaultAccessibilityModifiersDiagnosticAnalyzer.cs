@@ -83,7 +83,23 @@ namespace Microsoft.CodeAnalysis.CSharp.OmitDefaultAccessibilityModifiers
                 return;
             }
 
-            // TODO: Check for default modifiers
+            // Check for default modifiers
+            var parentKind = member.Parent?.Kind();
+            if(parentKind == null || parentKind == SyntaxKind.NamespaceDeclaration)
+            {
+                // Default is internal
+                if (accessibility != Accessibility.Internal)
+                    return;
+            }
+
+            if(parentKind == SyntaxKind.ClassDeclaration ||
+               parentKind == SyntaxKind.StructDeclaration )
+            {
+                // Inside a type, default is private
+                if (accessibility != Accessibility.Private)
+                    return;
+            }
+
 
             // Has default accessibility.  Report issue to user.
             var additionalLocations = ImmutableArray.Create(member.GetLocation());
