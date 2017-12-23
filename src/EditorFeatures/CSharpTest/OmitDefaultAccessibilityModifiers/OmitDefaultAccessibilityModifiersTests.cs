@@ -1,10 +1,13 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CodeStyle;
 using Microsoft.CodeAnalysis.CSharp.OmitDefaultAccessibilityModifiers;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics;
+using Microsoft.CodeAnalysis.Options;
 using Roslyn.Test.Utilities;
 using Xunit;
 
@@ -14,6 +17,9 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.OmitDefaultAccessibilit
     {
         internal override (DiagnosticAnalyzer, CodeFixProvider) CreateDiagnosticProviderAndFixer(Workspace workspace)
             => (new CSharpOmitDefaultAccessibilityModifiersDiagnosticAnalyzer(), new CSharpOmitDefaultAccessibilityModifiersCodeFixProvider());
+
+        private IDictionary<OptionKey, object> OmitDefaultModifiers =>
+    OptionsSet(SingleOption(CodeStyleOptions.OmitDefaultAccessibilityModifiers, CodeStyleOptions.TrueWithSuggestionEnforcement));
 
         [Fact, Trait(Traits.Feature, Traits.Features.CodeActionsOmitDefaultAccessibilityModifiers)]
         public async Task TestAllConstructs()
@@ -135,7 +141,7 @@ namespace Outer
             EMember
         }
     }
-}");
+}", options: OmitDefaultModifiers);
         }
 
         [Fact, Trait(Traits.Feature, Traits.Features.CodeActionsOmitDefaultAccessibilityModifiers)]
@@ -149,7 +155,7 @@ namespace Test
 namespace Test
 {
     ref struct S1 { }
-}");
+}", options: OmitDefaultModifiers);
         }
 
         [Fact, Trait(Traits.Feature, Traits.Features.CodeActionsOmitDefaultAccessibilityModifiers)]
@@ -163,7 +169,7 @@ namespace Test
 namespace Test
 {
     readonly struct S1 { }
-}");
+}", options: OmitDefaultModifiers);
         }
     }
 }
