@@ -47,12 +47,11 @@ namespace Microsoft.CodeAnalysis.OmitDefaultAccessibilityModifiers
 
                 var symbol = semanticModel.GetDeclaredSymbol(declarator, cancellationToken);
 
-                // TODO
                 editor.ReplaceNode(
                     declaration,
                     (currentDeclaration, generator) =>
                     {
-                        return generator.WithAccessibility(currentDeclaration, symbol.DeclaredAccessibility);
+                        return generator.WithAccessibility(currentDeclaration, Accessibility.NotApplicable);
                     });
             }
         }
