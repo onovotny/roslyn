@@ -4,6 +4,8 @@ Imports Microsoft.CodeAnalysis.CodeFixes
 Imports Microsoft.CodeAnalysis.Diagnostics
 Imports Microsoft.CodeAnalysis.VisualBasic.OmitDefaultAccessibilityModifiers
 Imports Microsoft.CodeAnalysis.Editor.VisualBasic.UnitTests.Diagnostics
+Imports Microsoft.CodeAnalysis.CodeStyle
+Imports Microsoft.CodeAnalysis.Options
 
 Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.UnitTests.OmitDefaultAccessibilityModifiers
     Public Class OmitDefaultAccessibilityModifiersTests
@@ -13,6 +15,13 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.UnitTests.OmitDefaultAccessi
             Return (New VisualBasicOmitDefaultAccessibilityModifiersDiagnosticAnalyzer(),
                     New VisualBasicOmitDefaultAccessibilityModifiersCodeFixProvider())
         End Function
+
+        Private ReadOnly Property OmitDefaultModifiers As IDictionary(Of OptionKey, Object)
+            Get
+                Return OptionsSet(
+                    SingleOption(CodeStyleOptions.OmitDefaultAccessibilityModifiers, True, NotificationOption.Suggestion))
+            End Get
+        End Property
 
         <Fact, Trait(Traits.Feature, Traits.Features.CodeActionsOmitDefaultAccessibilityModifiers)>
         Public Async Function TestAllConstructs() As Task
@@ -200,7 +209,7 @@ namespace N
             end sub()
         end module
     end namespace
-end namespace")
+end namespace", options:=OmitDefaultModifiers)
         End Function
     End Class
 End Namespace
