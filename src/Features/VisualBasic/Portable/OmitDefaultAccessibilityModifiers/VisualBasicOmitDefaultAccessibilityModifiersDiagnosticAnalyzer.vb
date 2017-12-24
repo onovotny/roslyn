@@ -61,7 +61,28 @@ Namespace Microsoft.CodeAnalysis.VisualBasic.OmitDefaultAccessibilityModifiers
                 Return
             End If
 
-            ' TODO: Add checks for default
+           
+            If member.Parent Is Nothing OrElse
+               member.IsParentKind(SyntaxKind.NamespaceBlock) Then
+                ' default is Friend
+                If Accessibility <> Accessibility.Friend Then
+                    Return
+                End If
+            End If
+
+            If member.IsParentKind(SyntaxKind.ClassBlock) Then
+                ' default for const and field in a class is private
+                If member.IsKind(SyntaxKind.FieldDeclaration) Then
+                    If Accessibility <> Accessibility.Private Then
+                        Return
+                    End If
+                End If
+            End If
+
+            ' Everything else has a default of public
+            If Accessibility <> Accessibility.Public Then
+                Return
+            End If
 
             ' Has default accessibility.  Report issue to user.
             Dim additionalLocations = ImmutableArray.Create(member.GetLocation())
