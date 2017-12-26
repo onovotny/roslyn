@@ -14,10 +14,6 @@ namespace Microsoft.CodeAnalysis.CSharp.OmitDefaultAccessibilityModifiers
     internal class CSharpOmitDefaultAccessibilityModifiersDiagnosticAnalyzer
         : AbstractOmitDefaultAccessibilityModifiersDiagnosticAnalyzer<CompilationUnitSyntax>
     {
-        public CSharpOmitDefaultAccessibilityModifiersDiagnosticAnalyzer()
-        {
-        }
-
         protected override void ProcessCompilationUnit(
             SyntaxTreeAnalysisContext context, SyntaxGenerator generator, 
             CodeStyleOption<bool> option, CompilationUnitSyntax compilationUnit)
@@ -85,19 +81,23 @@ namespace Microsoft.CodeAnalysis.CSharp.OmitDefaultAccessibilityModifiers
 
             // Check for default modifiers
             var parentKind = member.Parent?.Kind();
-            if(parentKind == null || parentKind == SyntaxKind.NamespaceDeclaration)
+            if (parentKind == null || parentKind == SyntaxKind.NamespaceDeclaration)
             {
                 // Default is internal
                 if (accessibility != Accessibility.Internal)
+                {
                     return;
+                }
             }
 
-            if(parentKind == SyntaxKind.ClassDeclaration ||
+            if (parentKind == SyntaxKind.ClassDeclaration ||
                parentKind == SyntaxKind.StructDeclaration )
             {
                 // Inside a type, default is private
                 if (accessibility != Accessibility.Private)
+                {
                     return;
+                }
             }
 
 
