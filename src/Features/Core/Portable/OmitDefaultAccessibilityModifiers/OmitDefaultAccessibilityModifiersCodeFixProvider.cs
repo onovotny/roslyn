@@ -15,10 +15,9 @@ using Roslyn.Utilities;
 
 namespace Microsoft.CodeAnalysis.OmitDefaultAccessibilityModifiers
 {
-    internal abstract class AbstractOmitDefaultAccessibilityModifiersCodeFixProvider : SyntaxEditorBasedCodeFixProvider
+    [ExportCodeFixProvider(LanguageNames.CSharp, LanguageNames.VisualBasic), Shared]
+    internal class OmitDefaultAccessibilityModifiersCodeFixProvider : SyntaxEditorBasedCodeFixProvider
     {
-        protected abstract SyntaxNode MapToDeclarator(SyntaxNode declaration);
-
         public sealed override ImmutableArray<string> FixableDiagnosticIds
             => ImmutableArray.Create(IDEDiagnosticIds.OmitDefaultAccessibilityModifiersDiagnosticId);
 
@@ -34,18 +33,13 @@ namespace Microsoft.CodeAnalysis.OmitDefaultAccessibilityModifiers
             return SpecializedTasks.EmptyTask;
         }
 
-        protected sealed override async Task FixAllAsync(
+        protected sealed override Task FixAllAsync(
             Document document, ImmutableArray<Diagnostic> diagnostics, 
             SyntaxEditor editor, CancellationToken cancellationToken)
         {
-            var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
             foreach (var diagnostic in diagnostics)
             {
                 var declaration = diagnostic.AdditionalLocations[0].FindNode(cancellationToken);
-                var declarator = MapToDeclarator(declaration);
-
-                var symbol = semanticModel.GetDeclaredSymbol(declarator, cancellationToken);
 
                 editor.ReplaceNode(
                     declaration,
@@ -54,6 +48,8 @@ namespace Microsoft.CodeAnalysis.OmitDefaultAccessibilityModifiers
                         return generator.WithAccessibility(currentDeclaration, Accessibility.NotApplicable);
                     });
             }
+
+            return SpecializedTasks.EmptyTask;
         }
 
         private class MyCodeAction : CodeAction.DocumentChangeAction

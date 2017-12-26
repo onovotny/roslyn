@@ -6,6 +6,7 @@ Imports Microsoft.CodeAnalysis.VisualBasic.OmitDefaultAccessibilityModifiers
 Imports Microsoft.CodeAnalysis.Editor.VisualBasic.UnitTests.Diagnostics
 Imports Microsoft.CodeAnalysis.CodeStyle
 Imports Microsoft.CodeAnalysis.Options
+Imports Microsoft.CodeAnalysis.OmitDefaultAccessibilityModifiers
 
 Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.UnitTests.OmitDefaultAccessibilityModifiers
     Public Class OmitDefaultAccessibilityModifiersTests
@@ -13,7 +14,7 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.UnitTests.OmitDefaultAccessi
 
         Friend Overrides Function CreateDiagnosticProviderAndFixer(workspace As Workspace) As (DiagnosticAnalyzer, CodeFixProvider)
             Return (New VisualBasicOmitDefaultAccessibilityModifiersDiagnosticAnalyzer(),
-                    New VisualBasicOmitDefaultAccessibilityModifiersCodeFixProvider())
+                    New OmitDefaultAccessibilityModifiersCodeFixProvider())
         End Function
 
         Private ReadOnly Property OmitDefaultModifiers As IDictionary(Of OptionKey, Object)

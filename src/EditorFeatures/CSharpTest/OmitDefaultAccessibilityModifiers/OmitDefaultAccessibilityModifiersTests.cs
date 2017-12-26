@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis.CodeStyle;
 using Microsoft.CodeAnalysis.CSharp.OmitDefaultAccessibilityModifiers;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics;
+using Microsoft.CodeAnalysis.OmitDefaultAccessibilityModifiers;
 using Microsoft.CodeAnalysis.Options;
 using Roslyn.Test.Utilities;
 using Xunit;
@@ -16,7 +17,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.OmitDefaultAccessibilit
     public partial class OmitDefaultAccessibilityModifiersTests : AbstractCSharpDiagnosticProviderBasedUserDiagnosticTest
     {
         internal override (DiagnosticAnalyzer, CodeFixProvider) CreateDiagnosticProviderAndFixer(Workspace workspace)
-            => (new CSharpOmitDefaultAccessibilityModifiersDiagnosticAnalyzer(), new CSharpOmitDefaultAccessibilityModifiersCodeFixProvider());
+            => (new CSharpOmitDefaultAccessibilityModifiersDiagnosticAnalyzer(), new OmitDefaultAccessibilityModifiersCodeFixProvider());
 
         private IDictionary<OptionKey, object> OmitDefaultModifiers =>
     OptionsSet(SingleOption(CodeStyleOptions.OmitDefaultAccessibilityModifiers, CodeStyleOptions.TrueWithSuggestionEnforcement));
