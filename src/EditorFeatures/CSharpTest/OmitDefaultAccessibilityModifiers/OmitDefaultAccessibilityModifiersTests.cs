@@ -172,5 +172,13 @@ namespace Test
     readonly struct S1 { }
 }", options: OmitDefaultModifiers);
         }
+
+        [Fact, Trait(Traits.Feature, Traits.Features.CodeActionsOmitDefaultAccessibilityModifiers)]
+        public async Task TestClassOutsideNamespace()
+        {
+            await TestInRegularAndScriptAsync(@"
+internal class [|C1|] { }", @"
+class C1 { }", options: OmitDefaultModifiers);
+        }
     }
 }

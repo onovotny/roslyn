@@ -62,7 +62,7 @@ Namespace Microsoft.CodeAnalysis.VisualBasic.OmitDefaultAccessibilityModifiers
             End If
 
            
-            If member.Parent Is Nothing OrElse
+            If member.IsParentKind(SyntaxKind.CompilationUnit) OrElse
                member.IsParentKind(SyntaxKind.NamespaceBlock) Then
                 ' default is Friend
                 If Accessibility <> Accessibility.Friend Then

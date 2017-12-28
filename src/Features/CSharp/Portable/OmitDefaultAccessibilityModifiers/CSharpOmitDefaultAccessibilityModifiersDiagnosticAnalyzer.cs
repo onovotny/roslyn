@@ -79,9 +79,10 @@ namespace Microsoft.CodeAnalysis.CSharp.OmitDefaultAccessibilityModifiers
                 return;
             }
 
-            // Check for default modifiers
-            var parentKind = member.Parent?.Kind();
-            if (parentKind == null || parentKind == SyntaxKind.NamespaceDeclaration)
+            // Check for default modifiers in namespace and outside of namespace
+            var parentKind = member.Parent.Kind();
+            if (parentKind == SyntaxKind.CompilationUnit || 
+                parentKind == SyntaxKind.NamespaceDeclaration)
             {
                 // Default is internal
                 if (accessibility != Accessibility.Internal)
@@ -91,7 +92,7 @@ namespace Microsoft.CodeAnalysis.CSharp.OmitDefaultAccessibilityModifiers
             }
 
             if (parentKind == SyntaxKind.ClassDeclaration ||
-               parentKind == SyntaxKind.StructDeclaration )
+                parentKind == SyntaxKind.StructDeclaration )
             {
                 // Inside a type, default is private
                 if (accessibility != Accessibility.Private)
